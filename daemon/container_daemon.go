@@ -3,22 +3,22 @@ package daemon
 import (
 	"embedded-mysql-container/exception"
 	"context"
-	"github.com/docker/docker/client"
 	"os"
 	"io"
+	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/client"
 )
 
-type Container struct {
+type ContainerDaemon struct {
 }
 
 var dockerContext = context.Background()
 var dockerCli, cliErr = client.NewEnvClient()
 var errorHandler = exception.ErrorHandler{}
 
-
-func (c Container) InitDocker() {
+func (c ContainerDaemon) InitDocker() {
 	if cliErr != nil {
 		errorHandler.ErrorMessage(
 			"docker cli new failed.",
@@ -27,7 +27,7 @@ func (c Container) InitDocker() {
 	}
 }
 
-func (c Container) PullImage() {
+func (c ContainerDaemon) PullImage() {
 	reader, pullErr := dockerCli.ImagePull(dockerContext, "docker.io/library/mysql", types.ImagePullOptions{})
 	if pullErr != nil {
 		errorHandler.ErrorMessage(
@@ -39,10 +39,10 @@ func (c Container) PullImage() {
 	io.Copy(os.Stdout, reader)
 }
 
-func (c Container) BuildImage() string {
-	resp, buildErr := dockerCli.ContainerCreate(dockerContext, &container.Config {
+func (c ContainerDaemon) BuildImage() string {
+	resp, buildErr := dockerCli.ContainerCreate(dockerContext, &container.Config{
 		Image: "mysql",
-		Cmd:   []string{"echo", "hello world"},
+		Cmd:   []string{"-p", "3306:3306"},
 		Tty:   true,
 	},
 		nil,
@@ -60,7 +60,7 @@ func (c Container) BuildImage() string {
 	return resp.ID
 }
 
-func (c Container) StartContainer(containerId string) {
+func (c ContainerDaemon) StartContainer(containerId string) {
 	if startErr := dockerCli.ContainerStart(dockerContext, containerId, types.ContainerStartOptions{}); startErr != nil {
 		errorHandler.ErrorMessage(
 			"docker start failed.",
@@ -69,7 +69,24 @@ func (c Container) StartContainer(containerId string) {
 	}
 }
 
-func (c Container) WaitForContainer(containerId string)  {
+func (c ContainerDaemon) StopAllContainer() {
+	containers, err := dockerCli.ContainerList(dockerContext, types.ContainerListOptions{})
+	if err != nil {
+		panic(err)
+	}
+
+	for _, con := range containers {
+		if err := dockerCli.ContainerStop(dockerContext, con.ID, nil); err != nil {
+			errorHandler.ErrorMessage(
+				"docker stop failed.",
+				err,
+			)
+		}
+		fmt.Println("Success")
+	}
+}
+
+func (c ContainerDaemon) WaitForContainer(containerId string) {
 	statusCh, errCh := dockerCli.ContainerWait(dockerContext, containerId, container.WaitConditionNotRunning)
 	select {
 	case err := <-errCh:
@@ -83,7 +100,7 @@ func (c Container) WaitForContainer(containerId string)  {
 	}
 }
 
-func (c Container) SetupLogOfContainer(containerId string) {
+func (c ContainerDaemon) SetupLogOfContainer(containerId string) {
 	out, logErr := dockerCli.ContainerLogs(dockerContext, containerId, types.ContainerLogsOptions{ShowStdout: true})
 	if logErr != nil {
 		errorHandler.ErrorMessage(
@@ -94,4 +111,3 @@ func (c Container) SetupLogOfContainer(containerId string) {
 
 	io.Copy(os.Stdout, out)
 }
-
