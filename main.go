@@ -4,7 +4,7 @@ import (
 	"embedded-mysql-container/daemon"
 )
 
-var container = daemon.Container{}
+var container = daemon.ContainerDaemon{}
 
 func main() {
 	container.InitDocker()
