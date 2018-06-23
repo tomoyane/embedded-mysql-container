@@ -4,42 +4,102 @@ import (
 	"context"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"unittest-mysql-container/exception"
-	"unittest-mysql-container/common"
+	"github.com/docker/docker/api/types/container"
+	"os"
+	"io"
+	"embedded-mysql-container/exception"
 )
 
-var errorHandler = exception.ErrorHandler{}
 var dockerContext = context.Background()
 var dockerCli, cliErr = client.NewEnvClient()
-var mysql string
+var errorHandler = exception.ErrorHandler{}
 
 func main() {
+	InitDocker()
+
+	PullImage()
+
+	var containerId = BuildImage()
+	
+	StartContainer(containerId)
+
+	WaitForContainer(containerId)
+
+	SetupLogOfContainer(containerId)
+}
+
+func InitDocker() {
 	if cliErr != nil {
 		errorHandler.ErrorMessage(
-			"docker engine is not working.",
+			"docker cli new failed.",
+			cliErr,
 		)
 	}
 }
 
-func PullMysqlContainer(version string) {
-	switch version {
-	case common.VERSION56:
-		mysql = "mysql:" + common.VERSION56
-
-	case common.VERSION57:
-		mysql = "mysql:" + common.VERSION57
-
-	case common.VERSION_LATEST:
-		mysql = "mysql"
-
-	default:
-		mysql = "mysql"
-	}
-
-	_, cliErr = dockerCli.ImagePull(dockerContext, mysql, types.ImagePullOptions{})
-	if cliErr != nil {
+func PullImage() {
+	reader, pullErr := dockerCli.ImagePull(dockerContext, "docker.io/library/mysql", types.ImagePullOptions{})
+	if pullErr != nil {
 		errorHandler.ErrorMessage(
-			"docker pull command failed.",
+			"docker pull image failed.",
+			pullErr,
 		)
 	}
+	io.Copy(os.Stdout, reader)
+}
+
+func BuildImage() string {
+	resp, buildErr := dockerCli.ContainerCreate(dockerContext, &container.Config {
+		Image: "mysql",
+		Cmd:   []string{"echo", "hello world"},
+		Tty:   true,
+	},
+	nil,
+	nil,
+	"",
+	)
+
+	if buildErr != nil {
+		errorHandler.ErrorMessage(
+			"docker build failed.",
+			buildErr,
+		)
+	}
+
+	return resp.ID
+}
+
+func StartContainer(containerId string) {
+	if startErr := dockerCli.ContainerStart(dockerContext, containerId, types.ContainerStartOptions{}); startErr != nil {
+		errorHandler.ErrorMessage(
+			"docker start failed.",
+			startErr,
+		)
+	}
+}
+
+func WaitForContainer(containerId string)  {
+	statusCh, errCh := dockerCli.ContainerWait(dockerContext, containerId, container.WaitConditionNotRunning)
+	select {
+	case err := <-errCh:
+		if err != nil {
+			errorHandler.ErrorMessage(
+				"docker wait for start failed.",
+				err,
+			)
+		}
+	case <-statusCh:
+	}
+}
+
+func SetupLogOfContainer(containerId string) {
+	out, logErr := dockerCli.ContainerLogs(dockerContext, containerId, types.ContainerLogsOptions{ShowStdout: true})
+	if logErr != nil {
+		errorHandler.ErrorMessage(
+			"docker logging failed.",
+			logErr,
+		)
+	}
+
+	io.Copy(os.Stdout, out)
 }
