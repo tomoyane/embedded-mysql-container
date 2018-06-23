@@ -6,6 +6,7 @@ import (
 
 type ErrorHandler struct{}
 
-func (e ErrorHandler) ErrorMessage(msg string) error {
-	return fmt.Errorf("error %s", msg)
+func (e ErrorHandler) ErrorMessage(msg string, err error) {
+	fmt.Println("Internal Error: " + msg)
+	panic(err.Error())
 }
