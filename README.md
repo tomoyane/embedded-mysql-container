@@ -1,1 +1,2 @@
-# [WIP] Embedded MySQL container
+# [WIP] Embedded MySQL container for Golang
+
