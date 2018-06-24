@@ -4,12 +4,12 @@ set -e -u -x
 
 go get -u github.com/golang/dep/cmd/dep
 
-ls -la
+ls -la /
 
-mv -t repository /go/src/repository
+#mv -t repository /go/src/repository
 
-cd /go/src/repository
+#cd /go/src/repository
 
-ls -la
+#ls -la
 
-dep ensure
+#dep ensure
