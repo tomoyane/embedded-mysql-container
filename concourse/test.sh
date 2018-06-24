@@ -6,7 +6,9 @@ go get -u github.com/golang/dep/cmd/dep
 
 ls -la
 
-cd repository
+mv -t repository /go/src/repository
+
+cd /go/src/repository
 
 ls -la
 
