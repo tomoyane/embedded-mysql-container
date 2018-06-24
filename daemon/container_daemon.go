@@ -1,14 +1,16 @@
 package daemon
 
 import (
-	"embedded-mysql-container/exception"
 	"context"
 	"os"
 	"io"
 	"fmt"
+	"embedded-mysql-container/exception"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/go-connections/nat"
+	"github.com/docker/docker/api/types/network"
 )
 
 type ContainerDaemon struct {
@@ -28,7 +30,7 @@ func (c ContainerDaemon) InitDocker() {
 }
 
 func (c ContainerDaemon) PullImage() {
-	reader, pullErr := dockerCli.ImagePull(dockerContext, "docker.io/library/mysql", types.ImagePullOptions{})
+	reader, pullErr := dockerCli.ImagePull(dockerContext, "docker.io/library/mysql:5.7", types.ImagePullOptions{})
 	if pullErr != nil {
 		errorHandler.ErrorMessage(
 			"docker pull image failed.",
@@ -40,14 +42,23 @@ func (c ContainerDaemon) PullImage() {
 }
 
 func (c ContainerDaemon) BuildImage() string {
+	hc := &container.HostConfig{
+		PortBindings: nat.PortMap{
+			nat.Port("3306"): []nat.PortBinding{nat.PortBinding{HostPort: "3306"}},
+		},
+	}
+
+	nc := &network.NetworkingConfig{}
+
 	resp, buildErr := dockerCli.ContainerCreate(dockerContext, &container.Config{
-		Image: "mysql",
-		Cmd:   []string{"-p", "3306:3306"},
-		Tty:   true,
+		Image:        "mysql:5.7",
+		ExposedPorts: nat.PortSet{nat.Port("3306"): struct{}{}},
+		Env:          []string{"MYSQL_ROOT_PASSWORD=root"},
+		Tty:          true,
 	},
-		nil,
-		nil,
-		"",
+		hc,
+		nc,
+		"embedded_mysql",
 	)
 
 	if buildErr != nil {
@@ -87,16 +98,12 @@ func (c ContainerDaemon) StopAllContainer() {
 }
 
 func (c ContainerDaemon) WaitForContainer(containerId string) {
-	statusCh, errCh := dockerCli.ContainerWait(dockerContext, containerId, container.WaitConditionNotRunning)
-	select {
-	case err := <-errCh:
-		if err != nil {
-			errorHandler.ErrorMessage(
-				"docker wait for start failed.",
-				err,
-			)
-		}
-	case <-statusCh:
+	_, errCh := dockerCli.ContainerWait(dockerContext, containerId)
+	if errCh != nil {
+		errorHandler.ErrorMessage(
+			"docker wait for start failed.",
+			errCh,
+		)
 	}
 }
 
