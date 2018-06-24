@@ -1,0 +1,55 @@
+resources:
+#  - name: repository
+#    type: git
+#    source:
+#      branch: master
+#      uri: git@github.com:tomo0111/embedded-mysql-container.git
+#      private_key: ((github-deploy-key))
+
+  - name: pull-request
+    type: pull-request
+    source:
+      uri: git@github.com:tomo0111/embedded-mysql-container.git
+      repo: tomo0111/embedded-mysql-container
+      access_token: ((github-access-token))
+      private_key: ((github-deploy-key))
+      base: master
+
+resource_types:
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: jtarchie/pr
+
+  - name: slack-notification
+    type: docker-image
+    source:
+      repository: cfcommunity/slack-notification-resource
+      tag: latest
+
+jobs:
+  - name: test
+    serial: true
+    public: true
+    plan:
+    - get: repository
+      resource: pull-request
+      trigger: true
+      version: every
+    - do:
+      - put: pull-request
+        params:
+          path: repository
+          status: pending
+      - task: test
+        file: repository/concourse/test.yml
+      on_success:
+        put: pull-request
+        params:
+          path: repository
+          status: success
+      on_failure:
+        put: pull-request
+        params:
+          path: repository
+          status: failure
