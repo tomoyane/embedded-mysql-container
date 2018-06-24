@@ -11,5 +11,4 @@ inputs:
 - name: repository
 
 run:
-  path: concourse/test.sh
-  dir: repository
+  path: repository/concourse/test.sh
