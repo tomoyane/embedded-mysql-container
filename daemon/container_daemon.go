@@ -11,6 +11,7 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/go-connections/nat"
 	"github.com/docker/docker/api/types/network"
+	"time"
 )
 
 type ContainerDaemon struct {
@@ -44,11 +45,13 @@ func (c ContainerDaemon) PullImage() {
 func (c ContainerDaemon) BuildImage() string {
 	hc := &container.HostConfig{
 		PortBindings: nat.PortMap{
-			nat.Port("3306"): []nat.PortBinding{nat.PortBinding{HostPort: "3306"}},
+			nat.Port("3306"): []nat.PortBinding{nat.PortBinding{HostPort: "33306"}},
 		},
 	}
 
 	nc := &network.NetworkingConfig{}
+
+	containerName := "embedded_mysql"
 
 	resp, buildErr := dockerCli.ContainerCreate(dockerContext, &container.Config{
 		Image:        "mysql:5.7",
@@ -58,7 +61,7 @@ func (c ContainerDaemon) BuildImage() string {
 	},
 		hc,
 		nc,
-		"embedded_mysql",
+		containerName,
 	)
 
 	if buildErr != nil {
@@ -80,6 +83,16 @@ func (c ContainerDaemon) StartContainer(containerId string) {
 	}
 }
 
+func (c ContainerDaemon) StopContainer(containerId string) {
+	timeout := 5 * time.Second
+	if stopErr := dockerCli.ContainerStop(dockerContext, containerId, &timeout); stopErr != nil {
+		errorHandler.ErrorMessage(
+			"docker container stop failed.",
+			stopErr,
+		)
+	}
+}
+
 func (c ContainerDaemon) StopAllContainer() {
 	containers, err := dockerCli.ContainerList(dockerContext, types.ContainerListOptions{})
 	if err != nil {
@@ -89,7 +102,7 @@ func (c ContainerDaemon) StopAllContainer() {
 	for _, con := range containers {
 		if err := dockerCli.ContainerStop(dockerContext, con.ID, nil); err != nil {
 			errorHandler.ErrorMessage(
-				"docker stop failed.",
+				"docker container all stop failed.",
 				err,
 			)
 		}
