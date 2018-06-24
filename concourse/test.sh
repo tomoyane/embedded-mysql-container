@@ -8,4 +8,8 @@ ls -la
 pwd
 # mv repository /go/src/repository
 
+cd repository
+
+ls -la
+
 dep ensure
