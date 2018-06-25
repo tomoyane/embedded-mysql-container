@@ -1,21 +1,20 @@
 package main
 
-import (
-	"embedded-mysql-container/daemon"
-)
-
-var container = daemon.ContainerDaemon{}
+var containerDaemon = ContainerDaemon{}
 
 func main() {
-	container.InitDocker()
+	containerDaemon.InitDocker()
 
-	container.PullImage()
+	containerDaemon.PullImage("docker.io/library/mysql:5.7")
 
-	var containerId = container.BuildImage()
+	var containerId = containerDaemon.BuildImage(
+		"mysql:5.7",
+		"embedded_mysql",
+	)
 
-	container.StartContainer(containerId)
+	containerDaemon.StartContainer(containerId)
 
-	container.WaitForContainer(containerId)
+	containerDaemon.WaitForContainer(containerId)
 
-	container.SetupLogOfContainer(containerId)
+	containerDaemon.SetupLogOfContainer(containerId)
 }

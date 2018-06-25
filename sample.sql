@@ -4,11 +4,11 @@ CREATE DATABASE sample;
 -- name: sample
 USE sample;
 
--- name: test
-DROP TABLE IF EXISTS test;
+-- name: tests
+DROP TABLE IF EXISTS tests;
 
--- name: create-users
-CREATE TABLE test (
+-- name: tests
+CREATE TABLE tests (
   id int(11) NOT NULL AUTO_INCREMENT,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
