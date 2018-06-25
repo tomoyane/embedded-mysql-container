@@ -9,3 +9,5 @@ cp -r repository /go/src/
 cd /go/src/repository
 
 dep ensure
+
+go test -v
