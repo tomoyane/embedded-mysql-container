@@ -4,7 +4,7 @@ CREATE DATABASE sample;
 -- name: sample
 USE sample;
 
--- name: test
+-- name: tests
 DROP TABLE IF EXISTS test;
 
 -- name: create-users
