@@ -8,9 +8,9 @@ type MysqlConfig struct {
 var mysqlResolverImpl = MysqlHandlerImpl{}.NewMysqlResolver()
 
 func (c MysqlConfig) Open() {
-	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:33306)/")
-	if err != nil {
-		panic(err)
+	db, openErr := sql.Open("mysql", "root:root@tcp(127.0.0.1:33306)/")
+	if openErr != nil {
+		panic(openErr)
 	}
 	defer db.Close()
 }
