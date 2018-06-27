@@ -1,6 +1,6 @@
 package main
 
-type MysqlHandler interface {
+type EmbeddedMysqlHandler interface {
 	CreateDatabase(query string)
 
 	CreateTable(query string)

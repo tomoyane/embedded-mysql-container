@@ -18,6 +18,6 @@ func main() {
 
 	containerDaemon.SetupLogOfContainer(containerId)
 
-	mysqlConfig := MysqlConfig{}
+	mysqlConfig := EmbeddedMysqlConfig{}
 	mysqlConfig.addSchema("sample")
 }
