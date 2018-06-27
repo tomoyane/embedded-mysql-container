@@ -145,11 +145,11 @@ func (c ContainerDaemon) WaitForContainer(containerId string) {
 }
 
 func (c ContainerDaemon) SetupLogOfContainer(containerId string) {
-	out, logErr := dockerCli.ContainerLogs(dockerContext, containerId, types.ContainerLogsOptions{ShowStdout: true})
-	if logErr != nil {
+	out, errLog := dockerCli.ContainerLogs(dockerContext, containerId, types.ContainerLogsOptions{ShowStdout: true})
+	if errLog != nil {
 		errorHandler.ErrorMessage(
 			"docker logging failed.",
-			logErr,
+			errLog,
 		)
 	}
 
