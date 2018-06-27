@@ -14,7 +14,10 @@ func main() {
 
 	containerDaemon.StartContainer(containerId)
 
-	containerDaemon.WaitForContainer(containerId)
+	//containerDaemon.WaitForContainer(containerId)
 
 	containerDaemon.SetupLogOfContainer(containerId)
+
+	mysqlConfig := MysqlConfig{}
+	mysqlConfig.addSchema("sample")
 }
