@@ -6,8 +6,6 @@ import (
 
 type EmbeddedMysqlHandlerImpl struct {}
 
-var errorHandler = Error{}
-
 func (m EmbeddedMysqlHandlerImpl) NewMysqlResolver() EmbeddedMysqlHandler {
 	return &EmbeddedMysqlHandlerImpl{}
 }
