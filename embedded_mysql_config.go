@@ -1,14 +1,18 @@
 package main
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type EmbeddedMysqlConfig struct {
 }
 
-var mysqlResolverImpl = EmbeddedMysqlHandlerImpl{}.NewMysqlResolver()
-var db *sql.DB
-var driverName = "mysql"
-var dataSourceName = "root:root@tcp(127.0.0.1:33306)/"
+var (
+	mysqlResolverImpl = EmbeddedMysqlHandlerImpl{}.NewMysqlResolver()
+	driverName = "mysql"
+	dataSourceName = "root:root@tcp(127.0.0.1:33306)/"
+	db *sql.DB
+)
 
 func (c EmbeddedMysqlConfig) ConnectMysql() {
 	db, openErr := sql.Open(driverName, dataSourceName)
@@ -24,4 +28,4 @@ func (c EmbeddedMysqlConfig) CloseMysql() {
 
 func (c EmbeddedMysqlConfig) addSchema(databaseName string)  {
 	mysqlResolverImpl.Insert("CREATE DATABASE " + databaseName)
-}	
+}
