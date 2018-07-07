@@ -4,13 +4,14 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type EmbeddedMysqlHandlerImpl struct {}
+type EmbeddedMysqlHandlerImpl struct {
+}
 
-func (m EmbeddedMysqlHandlerImpl) NewMysqlResolver() EmbeddedMysqlHandler {
+func (e EmbeddedMysqlHandlerImpl) NewEmbeddedMysqlHandlerImpl() EmbeddedMysqlHandler {
 	return &EmbeddedMysqlHandlerImpl{}
 }
 
-func (m EmbeddedMysqlHandlerImpl) CreateDatabase(query string) {
+func (e EmbeddedMysqlHandlerImpl) CreateDatabase(query string) {
 	_, queryErr := db.Exec(query)
 	if queryErr != nil {
 		errorHandler.ErrorMessage(
@@ -20,7 +21,7 @@ func (m EmbeddedMysqlHandlerImpl) CreateDatabase(query string) {
 	}
 }
 
-func (m EmbeddedMysqlHandlerImpl) CreateTable(query string)  {
+func (e EmbeddedMysqlHandlerImpl) CreateTable(query string) {
 	_, queryErr := db.Exec(query)
 	if queryErr != nil {
 		errorHandler.ErrorMessage(
@@ -30,7 +31,7 @@ func (m EmbeddedMysqlHandlerImpl) CreateTable(query string)  {
 	}
 }
 
-func (m EmbeddedMysqlHandlerImpl) DropTable(query string) {
+func (e EmbeddedMysqlHandlerImpl) DropTable(query string) {
 	_, queryErr := db.Exec(query)
 	if queryErr != nil {
 		errorHandler.ErrorMessage(
@@ -40,19 +41,32 @@ func (m EmbeddedMysqlHandlerImpl) DropTable(query string) {
 	}
 }
 
-func (m EmbeddedMysqlHandlerImpl) Insert(query string) {
+func (e EmbeddedMysqlHandlerImpl) InsertQuery(query string) {
 	_, queryErr := db.Exec(query)
 	if queryErr != nil {
 		errorHandler.ErrorMessage(
-			"mysql create database failed.",
+			"mysql insert query failed.",
 			queryErr,
 		)
 	}
 }
 
-func (m EmbeddedMysqlHandlerImpl) Update(query string) {
+func (e EmbeddedMysqlHandlerImpl) UpdateQuery(query string) {
+	_, queryErr := db.Exec(query)
+	if queryErr != nil {
+		errorHandler.ErrorMessage(
+			"mysql update query failed.",
+			queryErr,
+		)
+	}
 }
 
-func (m EmbeddedMysqlHandlerImpl) Delete(query string) {
+func (e EmbeddedMysqlHandlerImpl) DeleteQuery(query string) {
+	_, queryErr := db.Exec(query)
+	if queryErr != nil {
+		errorHandler.ErrorMessage(
+			"mysql delete query failed.",
+			queryErr,
+		)
+	}
 }
-
