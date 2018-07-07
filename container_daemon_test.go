@@ -4,6 +4,8 @@ import (
 	"testing"
 )
 
+var containerDaemon = ContainerDaemonImpl{}.NewContainerDaemonImpl()
+
 func TestInitContainer(t *testing.T) {
 	result := containerDaemon.InitDocker()
 	if !result {
