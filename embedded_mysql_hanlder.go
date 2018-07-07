@@ -7,9 +7,9 @@ type EmbeddedMysqlHandler interface {
 
 	DropTable(query string)
 
-	Insert(query string)
+	InsertQuery(query string)
 
-	Update(query string)
+	UpdateQuery(query string)
 
-	Delete(query string)
+	DeleteQuery(query string)
 }
