@@ -10,7 +10,8 @@ var (
 	db *sql.DB
 )
 
-func ConnectMysql() {
+func ConnectMysql(dbName string) {
+	dataSourceName = dataSourceName + dbName
 	db, openErr := sql.Open(driverName, dataSourceName)
 	if openErr != nil {
 		panic(openErr)
