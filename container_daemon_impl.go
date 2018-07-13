@@ -17,8 +17,10 @@ type ContainerDaemonImpl struct {
 	errorHandler *Error
 }
 
-var dockerContext = context.Background()
-var dockerCli, cliErr = client.NewEnvClient()
+var (
+	dockerContext = context.Background()
+	dockerCli, cliErr = client.NewEnvClient()
+)
 
 func (c ContainerDaemonImpl) NewContainerDaemonImpl() ContainerDaemon {
 	return &ContainerDaemonImpl{}
