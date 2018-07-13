@@ -12,62 +12,62 @@ func (e EmbeddedMysqlHandlerImpl) NewEmbeddedMysqlHandlerImpl() EmbeddedMysqlHan
 	return &EmbeddedMysqlHandlerImpl{}
 }
 
-func (e EmbeddedMysqlHandlerImpl) CreateDatabase(query string) {
-	_, err := db.Exec(query)
+func (e EmbeddedMysqlHandlerImpl) CreateDatabase(query string) bool {
+	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage(
-			"mysql create database failed.",
-			err,
-		)
+		e.errorHandler.ErrorMessage("mysql create database failed.", err)
+		return false
 	}
+
+	return true
 }
 
-func (e EmbeddedMysqlHandlerImpl) CreateTable(query string) {
-	_, err := db.Exec(query)
+func (e EmbeddedMysqlHandlerImpl) CreateTable(query string) bool {
+	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage(
-			"mysql create table failed.",
-			err,
-		)
+		e.errorHandler.ErrorMessage("mysql create table failed.", err)
+		return false
 	}
+
+	return true
 }
 
-func (e EmbeddedMysqlHandlerImpl) DropTable(query string) {
-	_, err := db.Exec(query)
+func (e EmbeddedMysqlHandlerImpl) DropTable(query string) bool {
+	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage(
-			"mysql drop table failed.",
-			err,
-		)
+		e.errorHandler.ErrorMessage("mysql drop table failed.", err)
+		return false
 	}
+
+	return true
 }
 
-func (e EmbeddedMysqlHandlerImpl) InsertQuery(query string) {
-	_, err := db.Exec(query)
+func (e EmbeddedMysqlHandlerImpl) InsertQuery(query string) bool {
+	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage(
-			"mysql insert query failed.",
-			err,
-		)
+		e.errorHandler.ErrorMessage("mysql insert query failed.", err)
+		return false
 	}
+
+	return true
 }
 
-func (e EmbeddedMysqlHandlerImpl) UpdateQuery(query string) {
-	_, err := db.Exec(query)
+func (e EmbeddedMysqlHandlerImpl) UpdateQuery(query string) bool {
+	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage(
-			"mysql update query failed.",
-			err,
-		)
+		e.errorHandler.ErrorMessage("mysql update query failed.", err)
+		return false
 	}
+
+	return true
 }
 
-func (e EmbeddedMysqlHandlerImpl) DeleteQuery(query string) {
-	_, err := db.Exec(query)
+func (e EmbeddedMysqlHandlerImpl) DeleteQuery(query string) bool {
+	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage(
-			"mysql delete query failed.",
-			err,
-		)
+		e.errorHandler.ErrorMessage("mysql delete query failed.", err)
+		return false
 	}
+
+	return true
 }
