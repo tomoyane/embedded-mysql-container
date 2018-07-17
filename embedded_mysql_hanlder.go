@@ -1,15 +1,15 @@
 package main
 
 type EmbeddedMysqlHandler interface {
-	CreateDatabase(query string)
+	CreateDatabase(query string) bool
 
-	CreateTable(query string)
+	CreateTable(query string) bool
 
-	DropTable(query string)
+	DropTable(query string) bool
 
-	InsertQuery(query string)
+	InsertQuery(query string) bool
 
-	UpdateQuery(query string)
+	UpdateQuery(query string) bool
 
-	DeleteQuery(query string)
+	DeleteQuery(query string) bool
 }
