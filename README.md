@@ -32,5 +32,3 @@ $ go get github.com/tomo0111/embedded-mysql-container
 
 ```
 
-## LICENSE
-MIT2.0
