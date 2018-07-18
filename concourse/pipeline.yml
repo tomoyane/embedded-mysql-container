@@ -3,14 +3,14 @@ resources:
 #    type: git
 #    source:
 #      branch: master
-#      uri: git@github.com:tomo0111/embedded-mysql-container.git
+#      uri: git@github.com:tomoyane/embedded-mysql-container.git
 #      private_key: ((github-deploy-key))
 
   - name: pull-request
     type: pull-request
     source:
-      uri: git@github.com:tomo0111/embedded-mysql-container.git
-      repo: tomo0111/embedded-mysql-container
+      uri: git@github.com:tomoyane/embedded-mysql-container.git
+      repo: tomoyane/embedded-mysql-container
       access_token: ((github-access-token))
       private_key: ((github-deploy-key))
       base: master
