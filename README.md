@@ -11,22 +11,22 @@ If you don't install docker engine, have to install docker engine.
 ## How to use
 Go get command.
 ```
-$ go get github.com/tomo0111/embedded-mysql-container
+$ go get github.com/tomoyane/embedded-mysql-container
 ```
 
-### Sample code by echo framework
-
-```
-
-```
-
-### Sample code by Gin framework
+### echo sample code
 
 ```
 
 ```
 
-### Sample code by Revel framework
+### gin sample code
+
+```
+
+```
+
+### Revel sample code
 
 ```
 
