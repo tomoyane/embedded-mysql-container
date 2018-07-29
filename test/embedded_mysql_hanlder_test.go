@@ -1,8 +1,11 @@
 package test
 
-import "testing"
+import (
+	"testing"
+	"github.com/tomoyane/embedded-mysql-container/container"
+)
 
-var mysqlHandler = EmbeddedMysqlHandlerImpl{}.NewEmbeddedMysqlHandlerImpl()
+var mysqlHandler = container.EmbeddedMysqlHandlerImpl{}.NewEmbeddedMysqlHandlerImpl()
 
 func TestCreateDatabase(t *testing.T) {
 	query := "CREATE DATABASE test"
