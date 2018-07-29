@@ -1,4 +1,4 @@
-package main
+package container
 
 type EmbeddedMysqlHandler interface {
 	CreateDatabase(query string) bool

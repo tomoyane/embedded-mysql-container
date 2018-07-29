@@ -1,4 +1,4 @@
-package main
+package container
 
 type ContainerDaemon interface {
 	InitDocker() bool
