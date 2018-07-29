@@ -5,7 +5,7 @@ Embedded MySQL container.
 
 This container's object want to resolve unit test database.
 
-## Docker setup
+## Docker engine
 Embedded MySQL container application needs to docker engine in your machine.
 
 If you don't install docker engine, have to install docker engine.
