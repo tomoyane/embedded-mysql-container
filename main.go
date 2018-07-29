@@ -1,7 +1,9 @@
 package main
 
+import "github.com/tomoyane/embedded-mysql-container/container"
+
 func main() {
-	containerDaemon := ContainerDaemonImpl{}.NewContainerDaemonImpl()
+	containerDaemon := container.ContainerDaemonImpl{}.NewContainerDaemonImpl()
 
 	containerDaemon.InitDocker()
 	containerDaemon.PullImage("docker.io/library/mysql:5.7")
