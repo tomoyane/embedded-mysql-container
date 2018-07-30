@@ -5,7 +5,6 @@ import (
 )
 
 type EmbeddedMysqlHandlerImpl struct {
-	errorHandler *Error
 }
 
 func (e EmbeddedMysqlHandlerImpl) NewEmbeddedMysqlHandlerImpl() EmbeddedMysqlHandler {
@@ -15,7 +14,13 @@ func (e EmbeddedMysqlHandlerImpl) NewEmbeddedMysqlHandlerImpl() EmbeddedMysqlHan
 func (e EmbeddedMysqlHandlerImpl) CreateDatabase(query string) bool {
 	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage("mysql create database failed.", err)
+		errContainer := ErrorContainer{
+			msg: "mysql create database failed.",
+			error: err,
+		}
+
+		errContainer.ErrorMessage()
+
 		return false
 	}
 
@@ -25,7 +30,13 @@ func (e EmbeddedMysqlHandlerImpl) CreateDatabase(query string) bool {
 func (e EmbeddedMysqlHandlerImpl) CreateTable(query string) bool {
 	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage("mysql create table failed.", err)
+		errContainer := ErrorContainer{
+			msg: "mysql create table failed.",
+			error: err,
+		}
+
+		errContainer.ErrorMessage()
+
 		return false
 	}
 
@@ -35,7 +46,13 @@ func (e EmbeddedMysqlHandlerImpl) CreateTable(query string) bool {
 func (e EmbeddedMysqlHandlerImpl) DropTable(query string) bool {
 	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage("mysql drop table failed.", err)
+		errContainer := ErrorContainer{
+			msg: "mysql drop table failed.",
+			error: err,
+		}
+
+		errContainer.ErrorMessage()
+
 		return false
 	}
 
@@ -45,7 +62,13 @@ func (e EmbeddedMysqlHandlerImpl) DropTable(query string) bool {
 func (e EmbeddedMysqlHandlerImpl) InsertQuery(query string) bool {
 	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage("mysql insert query failed.", err)
+		errContainer := ErrorContainer{
+			msg: "mysql insert query failed.",
+			error: err,
+		}
+
+		errContainer.ErrorMessage()
+
 		return false
 	}
 
@@ -55,7 +78,13 @@ func (e EmbeddedMysqlHandlerImpl) InsertQuery(query string) bool {
 func (e EmbeddedMysqlHandlerImpl) UpdateQuery(query string) bool {
 	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage("mysql update query failed.", err)
+		errContainer := ErrorContainer{
+			msg: "mysql update query failed.",
+			error: err,
+		}
+
+		errContainer.ErrorMessage()
+
 		return false
 	}
 
@@ -65,7 +94,13 @@ func (e EmbeddedMysqlHandlerImpl) UpdateQuery(query string) bool {
 func (e EmbeddedMysqlHandlerImpl) DeleteQuery(query string) bool {
 	_, err := Db.Exec(query)
 	if err != nil {
-		e.errorHandler.ErrorMessage("mysql delete query failed.", err)
+		errContainer := ErrorContainer{
+			msg: "mysql delete query failed.",
+			error: err,
+		}
+
+		errContainer.ErrorMessage()
+
 		return false
 	}
 
