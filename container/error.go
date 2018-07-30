@@ -4,9 +4,12 @@ import (
 	"fmt"
 )
 
-type Error struct{}
+type ErrorContainer struct{
+	msg string
+	error error
+}
 
-func (e Error) ErrorMessage(msg string, err error) {
-	fmt.Println("Internal Error: " + msg)
-	panic(err.Error())
+func (e ErrorContainer) ErrorMessage() {
+	fmt.Println("Internal Error: " + e.msg)
+	panic(error.Error(e.error))
 }
