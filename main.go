@@ -10,10 +10,11 @@ func main() {
 
 	containerId := containerDaemon.BuildImage(
 		"mysql:5.7",
-		"embedded_mysql",
+		"embedded_mysql3",
 	)
 
 	containerDaemon.StartContainer(containerId)
 	containerDaemon.SetupLogOfContainer(containerId)
 	containerDaemon.StopContainer(containerId)
+	containerDaemon.DeleteContainer(containerId)
 }
