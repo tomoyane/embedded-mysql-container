@@ -5,7 +5,6 @@ import (
 )
 
 type EmbeddedMysqlConfig struct {
-	errorHandler *Error
 }
 
 var (
@@ -17,7 +16,13 @@ var (
 
 func (c EmbeddedMysqlConfig) ConnectMysql(dbName string) {
 	if dataBaseName == "" {
-		c.errorHandler.ErrorMessage("Need to set database name", nil)
+		errContainer := ErrorContainer{
+			msg: "Need to set database name",
+			error: nil,
+		}
+
+		errContainer.ErrorMessage()
+
 		panic(nil)
 	}
 
