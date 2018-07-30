@@ -1,6 +1,4 @@
-[![Build Status](http://www.concourse.developer-tm.com:8080/api/v1/teams/main/pipelines/embedded-mysql-container-pipeline/jobs/test/badge)](https://www.concourse.developer-tm.com/teams/main/pipelines/embedded-mysql-container-pipeline)
-
-# Embedded MySQL container for Golang
+# Embedded MySQL container for Golang [![Build Status](http://www.concourse.developer-tm.com:8080/api/v1/teams/main/pipelines/embedded-mysql-container-pipeline/jobs/test/badge)](https://www.concourse.developer-tm.com/teams/main/pipelines/embedded-mysql-container-pipeline)
 Embedded MySQL container.
 
 This container's object want to resolve unit test database.
