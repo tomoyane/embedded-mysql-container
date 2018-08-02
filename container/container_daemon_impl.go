@@ -62,7 +62,7 @@ func (c ContainerDaemonImpl) PullImage(imageName string) bool {
 func (c ContainerDaemonImpl) BuildImage(imageName string, containerName string) string {
 	hc := &container.HostConfig{
 		PortBindings: nat.PortMap{
-			nat.Port("3306"): []nat.PortBinding{nat.PortBinding{HostPort: "33306"}},
+			nat.Port("3306"): []nat.PortBinding{{HostPort: "33306"}},
 		},
 	}
 
