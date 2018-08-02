@@ -153,18 +153,6 @@ func (c ContainerDaemonImpl) DeleteContainer(containerId string) {
 	}
 }
 
-func (c ContainerDaemonImpl) WaitForContainer(containerId string) {
-	_, err := dockerCli.ContainerWait(dockerContext, containerId)
-	if err != nil {
-		errContainer := ErrorContainer{
-			msg: "docker wait for start failed.",
-			error: err,
-		}
-
-		errContainer.ErrorMessage()
-	}
-}
-
 func (c ContainerDaemonImpl) SetupLogOfContainer(containerId string) {
 	out, err := dockerCli.ContainerLogs(dockerContext, containerId, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {

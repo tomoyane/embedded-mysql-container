@@ -15,7 +15,5 @@ type ContainerDaemon interface {
 
 	DeleteContainer(containerId string)
 
-	WaitForContainer(containerId string)
-
 	SetupLogOfContainer(containerId string)
 }
