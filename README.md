@@ -35,7 +35,7 @@ If you don't install docker engine, have to install docker engine.
  +----------------------------------------+  
 ```
 
-## How to use
+## Usage
 Go get command.
 ```
 $ go get github.com/tomoyane/embedded-mysql-container
