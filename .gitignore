@@ -1,4 +1,3 @@
 .idea/
-vendor/
 credentials.yml
 embedded-mysql-container
