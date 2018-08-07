@@ -2,21 +2,26 @@
 
 
 [[projects]]
+  digest = "1:adbfc2db750d6fbe0c165ad801ba2d730883a3bc40bc8fe829516eb42ed17771"
   name = "github.com/Microsoft/go-winio"
   packages = ["."]
+  pruneopts = "UT"
   revision = "a6d595ae73cf27a1b8fc32930668708f45ce1c85"
   version = "v0.4.9"
 
 [[projects]]
   branch = "docker/1.13"
+  digest = "1:6b5297ed2caa15361468ddbb4add02a8498b2c1082c3ac0a7eb0dde01f13428a"
   name = "github.com/docker/distribution"
   packages = [
     "digest",
-    "reference"
+    "reference",
   ]
+  pruneopts = "UT"
   revision = "28602af35aceda2f8d571bad7ca37a54cf0250bc"
 
 [[projects]]
+  digest = "1:2a24f860b9d3d8cb97fdc29b144c129ea41010336fc1b7b1bc1252d27b3569f9"
   name = "github.com/docker/docker"
   packages = [
     "api/types",
@@ -34,63 +39,85 @@
     "api/types/versions",
     "api/types/volume",
     "client",
-    "pkg/tlsconfig"
+    "pkg/tlsconfig",
   ]
+  pruneopts = "UT"
   revision = "49bf474f9ed7ce7143a59d1964ff7b7fd9b52178"
   version = "v1.13.0"
 
 [[projects]]
+  digest = "1:811c86996b1ca46729bad2724d4499014c4b9effd05ef8c71b852aad90deb0ce"
   name = "github.com/docker/go-connections"
   packages = [
     "nat",
     "sockets",
-    "tlsconfig"
+    "tlsconfig",
   ]
+  pruneopts = "UT"
   revision = "7395e3f8aa162843a74ed6d48e79627d9792ac55"
   version = "v0.4.0"
 
 [[projects]]
+  digest = "1:aaf8d8f8ffb92e0c4985a8796655071cb9a1870c585ad50d968f78931b871a98"
   name = "github.com/docker/go-units"
   packages = ["."]
+  pruneopts = "UT"
   revision = "8a7beacffa3009a9ac66bad506b18ffdd110cf97"
 
 [[projects]]
+  digest = "1:adea5a94903eb4384abef30f3d878dc9ff6b6b5b0722da25b82e5169216dfb61"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
+  pruneopts = "UT"
   revision = "d523deb1b23d913de5bdada721a6071e71283618"
   version = "v1.4.0"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "839d9e913e063e28dfd0e6c7b7512793e0a48be9"
 
 [[projects]]
   branch = "master"
+  digest = "1:58cb5fbdf85e1f468c749aa31773ff102866831106f52762b2823ae235ca11e7"
   name = "golang.org/x/net"
   packages = [
     "context",
     "context/ctxhttp",
     "internal/socks",
-    "proxy"
+    "proxy",
   ]
+  pruneopts = "UT"
   revision = "3673e40ba22529d22c3fd7c93e97b0ce50fa7bdd"
 
 [[projects]]
   branch = "master"
+  digest = "1:dd3d9d0e1a29183a916b553007481edfe445b5228c9eece9623e76acd6c8c436"
   name = "golang.org/x/sys"
   packages = ["windows"]
+  pruneopts = "UT"
   revision = "bd9dbc187b6e1dacfdd2722a87e83093c2d7bd6e"
 
 [[projects]]
+  digest = "1:c25289f43ac4a68d88b02245742347c94f1e108c534dda442188015ff80669b3"
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
+  pruneopts = "UT"
   revision = "b1f26356af11148e710935ed1ac8a7f5702c7612"
   version = "v1.1.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c9edca9e7cee4c6b6d819de541fb905a8f0cb0be0d43474445760006a2e18e2b"
+  input-imports = [
+    "github.com/docker/docker/api/types",
+    "github.com/docker/docker/api/types/container",
+    "github.com/docker/docker/api/types/network",
+    "github.com/docker/docker/client",
+    "github.com/docker/go-connections/nat",
+    "github.com/go-sql-driver/mysql",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

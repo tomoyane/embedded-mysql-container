@@ -39,6 +39,7 @@ If you don't install docker engine, have to install docker engine.
 Go get command.
 ```
 $ go get github.com/tomoyane/embedded-mysql-container
+$ rm -rf $GOPATH/src/github.com/docker/docker/vendor/github.com/docker/go-connections
 ```
 
 ### echo sample code
