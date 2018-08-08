@@ -39,8 +39,22 @@ If you don't install docker engine, have to install docker engine.
 Go get command.
 ```
 $ go get github.com/tomoyane/embedded-mysql-container
-$ rm -rf $GOPATH/src/github.com/docker/docker/vendor/github.com/docker/go-connections
 ```
+
+If you can get this error, you can do it after command.
+
+This is Go vendor issue maybe.
+```
+cannot use exposedPorts (type map["github.com/docker/go-
+connections/nat".Port]struct {}) as type map["github.com/docker/docker/vendor/github.com/docker/go-
+connections/nat".Port]struct {} in field value
+```
+
+```
+$ rm -rf $GOPATH/src/github.com/docker/docker/vendor/github.com/docker/go-connections
+$ go get github.com/tomoyane/embedded-mysql-container
+```
+
 
 ### echo sample code
 
