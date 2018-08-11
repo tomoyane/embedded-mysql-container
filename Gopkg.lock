@@ -65,14 +65,6 @@
   revision = "8a7beacffa3009a9ac66bad506b18ffdd110cf97"
 
 [[projects]]
-  digest = "1:adea5a94903eb4384abef30f3d878dc9ff6b6b5b0722da25b82e5169216dfb61"
-  name = "github.com/go-sql-driver/mysql"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "d523deb1b23d913de5bdada721a6071e71283618"
-  version = "v1.4.0"
-
-[[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
@@ -100,14 +92,6 @@
   pruneopts = "UT"
   revision = "bd9dbc187b6e1dacfdd2722a87e83093c2d7bd6e"
 
-[[projects]]
-  digest = "1:c25289f43ac4a68d88b02245742347c94f1e108c534dda442188015ff80669b3"
-  name = "google.golang.org/appengine"
-  packages = ["cloudsql"]
-  pruneopts = "UT"
-  revision = "b1f26356af11148e710935ed1ac8a7f5702c7612"
-  version = "v1.1.0"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -117,7 +101,6 @@
     "github.com/docker/docker/api/types/network",
     "github.com/docker/docker/client",
     "github.com/docker/go-connections/nat",
-    "github.com/go-sql-driver/mysql",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
