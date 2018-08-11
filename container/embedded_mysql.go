@@ -1,6 +1,9 @@
 package container
 
-import "database/sql"
+import (
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+)
 
 func AddSchema(name string) {
 
@@ -10,8 +13,10 @@ func AddSchema(name string) {
 	}
 	defer db.Close()
 
-	_,err = db.Exec("CREATE DATABASE " + name)
+	_, err = db.Exec("CREATE DATABASE " + name)
 	if err != nil {
 		panic(err)
 	}
+
+	db.Close()
 }
