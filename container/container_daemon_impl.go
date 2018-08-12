@@ -14,6 +14,7 @@ import (
 )
 
 type ContainerDaemonImpl struct {
+	errContainer ErrorContainer
 }
 
 var (
@@ -21,18 +22,15 @@ var (
 	dockerCli, cliErr = client.NewEnvClient()
 )
 
-func (c ContainerDaemonImpl) NewContainerDaemonImpl() ContainerDaemon {
+func (c ContainerDaemonImpl) New() ContainerDaemon {
 	return &ContainerDaemonImpl{}
 }
 
 func (c ContainerDaemonImpl) InitDocker() bool {
 	if cliErr != nil {
-		errContainer := ErrorContainer{
-			msg: "docker cli new failed.",
-			error: cliErr,
-		}
-
-		errContainer.ErrorMessage()
+		c.errContainer.msg = "docker cli new failed."
+		c.errContainer.error = cliErr
+		c.errContainer.ErrorMessage()
 
 		return false
 	}
@@ -43,12 +41,9 @@ func (c ContainerDaemonImpl) InitDocker() bool {
 func (c ContainerDaemonImpl) PullImage(imageName string) bool {
 	reader, err := dockerCli.ImagePull(dockerContext, imageName, types.ImagePullOptions{})
 	if err != nil {
-		errContainer := ErrorContainer{
-			msg: "docker pull image failed.",
-			error: err,
-		}
-
-		errContainer.ErrorMessage()
+		c.errContainer.msg = "docker pull image failed."
+		c.errContainer.error = cliErr
+		c.errContainer.ErrorMessage()
 
 		return false
 
@@ -80,12 +75,9 @@ func (c ContainerDaemonImpl) BuildImage(imageName string, containerName string) 
 	)
 
 	if err != nil {
-		errContainer := ErrorContainer{
-			msg: "docker build failed.",
-			error: err,
-		}
-
-		errContainer.ErrorMessage()
+		c.errContainer.msg = "docker build failed."
+		c.errContainer.error = cliErr
+		c.errContainer.ErrorMessage()
 	}
 
 	return resp.ID
@@ -93,12 +85,9 @@ func (c ContainerDaemonImpl) BuildImage(imageName string, containerName string) 
 
 func (c ContainerDaemonImpl) StartContainer(containerId string) bool {
 	if err := dockerCli.ContainerStart(dockerContext, containerId, types.ContainerStartOptions{}); err != nil {
-		errContainer := ErrorContainer{
-			msg: "docker start failed.",
-			error: err,
-		}
-
-		errContainer.ErrorMessage()
+		c.errContainer.msg = "docker start failed."
+		c.errContainer.error = cliErr
+		c.errContainer.ErrorMessage()
 
 		return false
 	}
@@ -109,17 +98,12 @@ func (c ContainerDaemonImpl) StartContainer(containerId string) bool {
 func (c ContainerDaemonImpl) StopContainer(containerId string) bool {
 	timeout := 5 * time.Second
 	if err := dockerCli.ContainerStop(dockerContext, containerId, &timeout); err != nil {
-		errContainer := ErrorContainer{
-			msg: "docker containerDaemon stop failed.",
-			error: err,
-		}
-
-		errContainer.ErrorMessage()
+		c.errContainer.msg = "docker containerDaemon stop failed."
+		c.errContainer.error = cliErr
+		c.errContainer.ErrorMessage()
 
 		return false
 	}
-
-	time.Sleep(10 * time.Second)
 
 	return true
 }
@@ -132,12 +116,9 @@ func (c ContainerDaemonImpl) StopAllContainer() {
 
 	for _, con := range containers {
 		if err := dockerCli.ContainerStop(dockerContext, con.ID, nil); err != nil {
-			errContainer := ErrorContainer{
-				msg: "docker containerDaemon all stop failed.",
-				error: err,
-			}
-
-			errContainer.ErrorMessage()
+			c.errContainer.msg = "docker containerDaemon all stop failed."
+			c.errContainer.error = cliErr
+			c.errContainer.ErrorMessage()
 		}
 		fmt.Println("Success")
 	}
@@ -146,24 +127,18 @@ func (c ContainerDaemonImpl) StopAllContainer() {
 func (c ContainerDaemonImpl) DeleteContainer(containerId string) {
 	err := dockerCli.ContainerRemove(dockerContext, containerId, types.ContainerRemoveOptions{})
 	if err != nil {
-		errContainer := ErrorContainer{
-			msg: "docker container delete failed.",
-			error: err,
-		}
-
-		errContainer.ErrorMessage()
+		c.errContainer.msg = "docker container delete failed."
+		c.errContainer.error = cliErr
+		c.errContainer.ErrorMessage()
 	}
 }
 
 func (c ContainerDaemonImpl) SetupLogOfContainer(containerId string) {
 	out, err := dockerCli.ContainerLogs(dockerContext, containerId, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-		errContainer := ErrorContainer{
-			msg: "docker logging failed.",
-			error: err,
-		}
-
-		errContainer.ErrorMessage()
+		c.errContainer.msg = "docker logging failed."
+		c.errContainer.error = cliErr
+		c.errContainer.ErrorMessage()
 	}
 
 	io.Copy(os.Stdout, out)
@@ -171,4 +146,24 @@ func (c ContainerDaemonImpl) SetupLogOfContainer(containerId string) {
 
 func (c ContainerDaemonImpl) WaitRun(containerId string) {
 	dockerCli.ContainerWait(dockerContext, containerId)
+}
+
+func (c ContainerDaemonImpl) StartEmbeddedMysql() string {
+	c.InitDocker()
+	c.PullImage("docker.io/library/mysql:5.7")
+
+	containerId := c.BuildImage(
+		"mysql:5.7",
+		"embedded_mysql3")
+
+	c.StartContainer(containerId)
+
+	time.Sleep(10 * time.Second)
+
+	return containerId
+}
+
+func (c ContainerDaemonImpl) FinishEmbeddedMysql(containerId string) {
+	c.StopContainer(containerId)
+	c.DeleteContainer(containerId)
 }

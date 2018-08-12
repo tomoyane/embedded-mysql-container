@@ -18,4 +18,8 @@ type ContainerDaemon interface {
 	SetupLogOfContainer(containerId string)
 
 	WaitRun(containerId string)
+
+	StartEmbeddedMysql() string
+
+	FinishEmbeddedMysql(containerId string)
 }
