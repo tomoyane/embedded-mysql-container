@@ -23,7 +23,13 @@ func (m MysqlConfigImpl) AddSchema(name string) {
 	}
 	defer db.Close()
 
-	db.Exec("CREATE DATABASE " + name)
+	_, err = db.Exec("CREATE DATABASE " + name)
+	if err != nil {
+		m.errContainer.msg = "mysql  query failed."
+		m.errContainer.error = cliErr
+		m.errContainer.ErrorMessage()
+	}
+
 	db.Close()
 }
 
@@ -37,6 +43,12 @@ func (m MysqlConfigImpl) CreateTable(query string) {
 	}
 	defer db.Close()
 
-	db.Exec(query)
+	_, err = db.Exec(query)
+	if err != nil {
+		m.errContainer.msg = "mysql  query failed."
+		m.errContainer.error = cliErr
+		m.errContainer.ErrorMessage()
+	}
+
 	db.Close()
 }
