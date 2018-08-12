@@ -1,5 +1,6 @@
 # Embedded MySQL container 
 [![Build Status](http://www.concourse.developer-tm.com:8080/api/v1/teams/main/pipelines/embedded-mysql-container-pipeline/jobs/test/badge)](https://www.concourse.developer-tm.com/teams/main/pipelines/embedded-mysql-container-pipeline)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/tomoyane/embedded-mysql-container/blob/master/LICENSE.txt)
 
 Embedded MySQL container.
 
@@ -100,7 +101,7 @@ func TestMain(m *testing.M) {
 
 	time.Sleep(10 * time.Second)
 
-	embeddedMysql.AddSchema("auth_server")
+	embeddedMysql.AddSchema("test")
 	embeddedMysql.CreateTable("CREATE TABLE test.items (" +
 		"id int(11) NOT NULL AUTO_INCREMENT," +
 		"name varchar(128) NOT NULL," +
@@ -142,3 +143,7 @@ func main() {
     containerDaemon.StartContainer(containerId)
 }
 ```
+
+## License
+
+[MIT](https://github.com/tomoyane/embedded-mysql-container/blob/master/LICENSE.txt)
