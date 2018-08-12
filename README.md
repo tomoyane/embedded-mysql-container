@@ -1,6 +1,6 @@
 # Embedded MySQL container 
 [![Build Status](http://www.concourse.developer-tm.com:8080/api/v1/teams/main/pipelines/embedded-mysql-container-pipeline/jobs/test/badge)](https://www.concourse.developer-tm.com/teams/main/pipelines/embedded-mysql-container-pipeline)
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/tomoyane/embedded-mysql-container/blob/master/LICENSE.txt)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/tomoyane/embedded-mysql-container/blob/master/LICENSE)
 
 Embedded MySQL container.
 
@@ -146,4 +146,4 @@ func main() {
 
 ## License
 
-[MIT](https://github.com/tomoyane/embedded-mysql-container/blob/master/LICENSE.txt)
+[MIT](https://github.com/tomoyane/embedded-mysql-container/blob/master/LICENSE)
