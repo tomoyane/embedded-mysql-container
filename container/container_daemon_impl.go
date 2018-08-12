@@ -119,6 +119,8 @@ func (c ContainerDaemonImpl) StopContainer(containerId string) bool {
 		return false
 	}
 
+	time.Sleep(10 * time.Second)
+
 	return true
 }
 
@@ -165,4 +167,8 @@ func (c ContainerDaemonImpl) SetupLogOfContainer(containerId string) {
 	}
 
 	io.Copy(os.Stdout, out)
+}
+
+func (c ContainerDaemonImpl) WaitRun(containerId string) {
+	dockerCli.ContainerWait(dockerContext, containerId)
 }
