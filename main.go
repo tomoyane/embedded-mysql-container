@@ -12,11 +12,5 @@ func main() {
 	embeddedMysql.AddSchema("test")
 
 	containerDaemon.SetupLogOfContainer(containerId)
+	containerDaemon.FinishEmbeddedMysql(containerId)
 }
-
-//containerDaemon.InitDocker()
-//containerDaemon.PullImage("docker.io/library/mysql:5.7")
-//containerId := containerDaemon.BuildImage(
-//"mysql:5.7",
-//"embedded_mysql_container")
-//containerDaemon.StartContainer(containerId)
