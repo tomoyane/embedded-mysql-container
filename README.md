@@ -5,7 +5,11 @@ Embedded MySQL container.
 
 This container's object want to resolve unit test database.
 
-## Docker engine
+## How to task ?
+ - Your tests can run on production-like. 
+ - You can easily try mysql linkage.
+
+## Using Docker engine
 Embedded MySQL container application needs to docker engine in your machine.
 
 If you don't install docker engine, have to install docker engine.
@@ -35,6 +39,11 @@ If you don't install docker engine, have to install docker engine.
  +----------------------------------------+  
 ```
 
+### Default MySQL config
+| Host | Port | User | Pass |
+| --- | --- | --- | --- |
+| 127.0.0.1 | 33306 | root | root |
+
 ## Usage
 Go get command.
 ```
@@ -55,22 +64,81 @@ $ rm -rf $GOPATH/src/github.com/docker/docker/vendor/github.com/docker/go-connec
 $ go get github.com/tomoyane/embedded-mysql-container
 ```
 
+### Basic example
 
-### echo sample code
+```go
+import "github.com/tomoyane/embedded-mysql-container/container"
 
+func main() {
+    containerDaemon := container.ContainerDaemonImpl{}.New()
+    embeddedMysql := container.MysqlConfigImpl{}.New()
+
+    containerId := containerDaemon.StartEmbeddedMysql()
+
+    // Need to sleep.
+    // Wait for container startup.
+    time.Sleep(10 * time.Second)
+
+    embeddedMysql.AddSchema("test")
+
+    // Init database
+    
+    containerDaemon.FinishEmbeddedMysql(containerId)
+}
 ```
 
+### Unit Test example
+
+```go
+import "github.com/tomoyane/embedded-mysql-container/container"
+
+func TestMain(m *testing.M) {
+	containerDaemon := container.ContainerDaemonImpl{}.New()
+	embeddedMysql := container.MysqlConfigImpl{}.New()
+
+	containerId := containerDaemon.StartEmbeddedMysql()
+
+	time.Sleep(10 * time.Second)
+
+	embeddedMysql.AddSchema("auth_server")
+	embeddedMysql.CreateTable("CREATE TABLE test.items (" +
+		"id int(11) NOT NULL AUTO_INCREMENT," +
+		"name varchar(128) NOT NULL," +
+		"created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+		"updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+		"PRIMARY KEY (id)," +
+		"ENGINE=InnoDB DEFAULT CHARSET=utf8")
+	
+	// Init main database
+	
+	code := m.Run()
+
+	// After finish mysql container
+	containerDaemon.FinishEmbeddedMysql(containerId)
+
+	os.Exit(code)
+}
 ```
 
-### gin sample code
+### Custom example
+If you want set any mysql version, you can set version mysql.
 
+And If you want set any container name, you can set container name. 
+
+```go
+import "github.com/tomoyane/embedded-mysql-container/container"
+
+func main() {
+    containerDaemon := container.ContainerDaemonImpl{}.New()
+    embeddedMysql := container.MysqlConfigImpl{}.New()
+    
+    containerDaemon.InitDocker()
+    
+    // MySQL5.7
+    containerDaemon.PullImage("docker.io/library/mysql:5.7")
+    containerId := containerDaemon.BuildImage(
+        "mysql:5.7",
+        "embedded_mysql_container")
+    containerDaemon.StartContainer(containerId)
+}
 ```
-
-```
-
-### Revel sample code
-
-```
-
-```
-
