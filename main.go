@@ -5,21 +5,11 @@ import (
 )
 
 func main() {
-	containerDaemon := container.ContainerDaemonImpl{}.NewContainerDaemonImpl()
+	containerDaemon := container.ContainerDaemonImpl{}.New()
+	embeddedMysql := container.MysqlConfigImpl{}.New()
 
-	containerDaemon.InitDocker()
-	containerDaemon.PullImage("docker.io/library/mysql:5.7")
-
-	containerId := containerDaemon.BuildImage(
-		"mysql:5.7",
-		"embedded_mysql3")
-
-	containerDaemon.StartContainer(containerId)
-	
-	container.AddSchema("test")
+	containerId := containerDaemon.StartEmbeddedMysql()
+	embeddedMysql.AddSchema("test")
 
 	containerDaemon.SetupLogOfContainer(containerId)
-
-	containerDaemon.StopContainer(containerId)
-	containerDaemon.DeleteContainer(containerId)
 }
