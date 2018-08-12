@@ -45,7 +45,7 @@ func (m MysqlConfigImpl) CreateTable(query string) {
 
 	_, err = db.Exec(query)
 	if err != nil {
-		m.errContainer.msg = "mysql  query failed."
+		m.errContainer.msg = "mysql query failed."
 		m.errContainer.error = cliErr
 		m.errContainer.ErrorMessage()
 	}

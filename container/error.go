@@ -11,5 +11,5 @@ type ErrorContainer struct{
 
 func (e ErrorContainer) ErrorMessage() {
 	fmt.Println("Internal Error: " + e.msg)
-	panic(error.Error(e.error))
+	fmt.Println(error.Error(e.error))
 }
