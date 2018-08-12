@@ -5,7 +5,7 @@ import (
 	"github.com/tomoyane/embedded-mysql-container/container"
 )
 
-var containerDaemon = container.ContainerDaemonImpl{}.NewContainerDaemonImpl()
+var containerDaemon = container.ContainerDaemonImpl{}.New()
 
 func TestInitContainer(t *testing.T) {
 	result := containerDaemon.InitDocker()
