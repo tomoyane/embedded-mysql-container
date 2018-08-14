@@ -6,7 +6,7 @@ Embedded MySQL container.
 
 This container's object want to resolve unit test database.
 
-## How to task ?
+## Why ?
  - Your tests can run on production-like. 
  - You can easily try mysql linkage.
 
